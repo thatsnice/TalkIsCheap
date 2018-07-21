@@ -1,0 +1,12 @@
+{
+  "name": "TalkIsCheap",
+  "version": "0.0.0",
+  "description": "SysOps automation using XMPP for command and control",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Robert de Forest <robert@defore.st>",
+  "license": "MIT"
+}
