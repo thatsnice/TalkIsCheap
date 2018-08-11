@@ -2,12 +2,22 @@
 
 id = 0
 
+expect = (instance, expectations) ->
+  for name, expectation of expectations
+    value = instance._get name
+    switch
+      when 'string' is typeof expectation             then assert value isnt undefined
+      when 'object' is typeof klass = expectation.isa then assert value instanceof klass
+
 class Versioned
   constructor: (@_changed = {}, @prev = null) ->
     @committed = false
     @id = id++
-    @_set 'name', @id if not @_get 'name'
+    @_set 'name', @id unless 'string' is typeof @_get 'name'
     @deleted = false
+
+    if 'function' is typeof @constructor.expects
+      expect instance, @constructor.expects @
 
   _get: (propName) -> @_changed[propName] ? @prev?[propName]
 

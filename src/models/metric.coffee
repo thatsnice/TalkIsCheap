@@ -1,16 +1,14 @@
-{Versioned, expect}    = require './versioned'
+{Versioned}            = require './versioned'
 {ActionImplementation} = require './action-implementation'
 
 class Metric extends Versioned
-  constructor: ->
-    super arguments...
+  @expects: ->
+    ActionImplementation: isa: ActionImplementation
+    units:      ''
+    rangeFrom:  ''
+    rangeTo:    ''
 
-    expect @,
-      ActionImplementation: (value) ->
-        value instanceof ActionImplementation
-      parameters: ''
-      units:      ''
-      rangeFrom:  ''
-      rangeTo:    ''
+  measure: (resource) ->
+    # Observe this Metric on the specified Resource, creating a Measurement
 
 module.exports = {Metric}
