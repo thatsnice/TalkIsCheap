@@ -1,20 +1,13 @@
-{ Versioned
-  expect
-} = require './versioned'
-
-{ ActionImplementation
-  isAction
-} = require './action-implementation'
-
+{ Versioned            } = require './versioned'
+{ ActionImplementation } = require './action-implementation'
+{ Constraint           } = require './constraint'
 
 class Control extends Versioned
-  constructor: ->
-    super arguments...
+  bump: (context) -> @getBump().invoke context
 
-    expect @,
-      increase:      isAction
-      decrease:      isAction
-      preRequisite:  isConstraint
-      postRequisite: isConstraint
-      rollback:      isAction
+Control.has
+  bump:          isa: ActionImplementation
+  preRequisite:  isa: Constraint
+  postRequisite: isa: Constraint
 
+module.exports = { Control }

@@ -9,15 +9,33 @@ expect = (instance, expectations) ->
       when 'string' is typeof expectation             then assert value isnt undefined
       when 'object' is typeof klass = expectation.isa then assert value instanceof klass
 
+validate = (klass, name, value, details) ->
+  if details.isa instanceof Object
+    if value not instanceof isa = details.isa
+      throw new Error "#{klass.name}::[#{name}] must be an instance of #{isa.name}"
+
+  if 'function' is typeof details
+    if err = details value
+      throw new Error err
+
+addAccessors = (klass, name, details) ->
+  Name = name[0].toUpperCase() + name[1..]
+  klass::["get" + Name] =         -> @_get name
+  klass::["set" + Name] = (value) -> validate klass, name, value, details
+
 class Versioned
-  constructor: (@_changed = {}, @prev = null) ->
+  has: (props) ->
+    for name, details of props
+      addAccessors @, name, details
+
+  constructor: (changed = {}, @prev = null) ->
     @committed = false
     @id = id++
     @_set 'name', @id unless 'string' is typeof @_get 'name'
     @deleted = false
 
-    if 'function' is typeof @constructor.expects
-      expect instance, @constructor.expects @
+    for name, value of changed
+      @_set name, value
 
   _get: (propName) -> @_changed[propName] ? @prev?[propName]
 
@@ -30,4 +48,4 @@ class Versioned
 
   _commit: -> @committed = true
 
-module.exports = {Versioned}
+module.exports = { Versioned }
