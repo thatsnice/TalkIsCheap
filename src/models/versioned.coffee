@@ -24,7 +24,7 @@ addAccessors = (klass, name, details) ->
   klass::["set" + Name] = (value) -> validate klass, name, value, details
 
 class Versioned
-  has: (props) ->
+  @has: (props) ->
     for name, details of props
       addAccessors @, name, details
 
